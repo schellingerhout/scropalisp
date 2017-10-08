@@ -1,0 +1,52 @@
+/**
+ * Defines a data model for Scissors, Paper, Rock, Lizard, Spock (scropalisp)
+ */
+namespace org.acme.scropalisp
+
+enum GameState {
+  o OPEN
+  o CLOSED
+}
+
+asset Game identified by gameID {
+  o String gameID
+  o GameState state
+  o PlayHand[] hands optional 
+  --> GameMaster owner
+}
+
+abstract participant User identified by email {
+  o String email
+  o String firstName
+  o String lastName
+}
+
+enum PlayerType {
+ o HUMAN
+ o AI
+}
+
+participant Player extends User {
+  o PlayerType playerType default="HUMAN" // we need to distinguish between AI and humans when analyzing results
+  o Double score  //may want to move this to a scorecard asset that the user holds, but cannot edit
+  o Integer gamesPlayed default=0
+}
+
+participant GameMaster extends User {
+}
+ 
+ 
+transaction PlayHand {
+  o Integer numScissor
+  o Integer numPaper 
+  o Integer numRock
+  o Integer numLizard 
+  o Integer numSpock  
+  o Long score default=0 optional //doesn't matter if submitted with transaction, transaction processor will explicitly set
+  --> Player player
+  --> Game game
+}
+
+transaction CloseGame {
+  --> Game game
+}
