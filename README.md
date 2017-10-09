@@ -1,9 +1,8 @@
-
 # Scissors, Paper, Rock, Lizard, Spock (scropalisp)
 
 > This is an extension on the classic rock, paper, scissors ("scropalisp"*) game that adds two new hands shapes (spock - vulcan greeting, and lizard - fingers together). It is a multiplayer, multi weapon game in which players can hold as many weapons as desired per game (up to 100). 
 
-* Yes, I know it should be "scparolisp", but "scropalisp" is pronouncable
+ *Yes, I know it should be "scparolisp", but "scropalisp" is pronouncable
 
 This game is distributed and any number of participants (AI and Human) can take part in any game. Players, play hands made with any number of weapons, this allows them to distribute risk or to leverage greater returns. The desired weapons are added to a hand that is added to an open game. Once the game is closed for new hands scoring takes place and players have their scores adjusted 
 
