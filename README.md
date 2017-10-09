@@ -12,9 +12,9 @@ This game is distributed and any number of participants (AI and Human) can take 
 By itself a simple game like this does not require a blockchain, but one we release this into a broad network with multiple nodes or where AI may compete in various games at the same time a blockchain facilitates in the following ways:
 
 * Transactional updating of scores
-* Incorruptable evidential record for research purposes
+* Incorruptible evidential record for research purposes
 
-In order to determine how well an AI has done we will look at its score and the number of games played. The transactional incrementing of the scores are critical  because errors during race conditions with a massively parallel system is hard to track down
+To determine how well an AI has done we will look at its score and the number of games played. The transactional incrementing of the scores are critical  because errors during race conditions with a massively parallel system is hard to track down
 
 ## Composition
 
@@ -32,7 +32,7 @@ In order to determine how well an AI has done we will look at its score and the 
 
 `PlayHand`: `Player`s use this transaction to submit their hands to a game. 
 
-`CloseGame`: `GameMaster`s use this transaction to prevent the addtion of more hands to the game and to adjust scores transactionally
+`CloseGame`: `GameMaster`s use this transaction to prevent the addition of more hands to the game and to adjust scores transactionally
 
 The `GameMaster` will open new games for players and close the game for scoring.
 
@@ -44,7 +44,7 @@ The `closeGame` function is called when a `CloseGame` transaction is submitted f
 The process starts with `GameMaster` creating a game. Each `Player` chooses the weapons for a hand and submits the hand to the game by calling `PlayHand`. Once the `GameMaster` decides to close the game (probably with limits on time, number of players), they can call `CloseGame`. The `CloseGame` transaction scores the game and awards points to players.
 
 ### Scoring each hand 
-Each weapon in a hand is scored against all the other types of weapons (in all hands). The score for each weapon is a negative or positive value added to the hand's score. For instance each Rock will get a score of AllScissors - AllPapers + AllLizards - AllSpocks.  Since a hand can hold multiple weapons, and any number of each, the score for a hand is then
+Each weapon in a hand is scored against all the other types of weapons (in all hands). The score for each weapon is a negative or positive value added to the hand's score. For instance, each Rock will get a score of AllScissors - AllPapers + AllLizards - AllSpocks.  Since a hand can hold multiple weapons, and any number of each, the score for a hand is then
 
 ```
 hand.score =  hand.numScissor * (totPaper - totRock + totLizard - totSpock) +
@@ -60,7 +60,7 @@ The scores in hands can be large positive or negative integers
 
 Since all weapons are scored against other weapons (including weapons in the same hand) the total score of all weapons over all hands is always 0 (the sum of positive, negative values will cancel out). 
 
-To normalize the scores for `Player`s to a maximum of +1 and minimum of -1 per `Game` we divide each `Player`'s hand's score over the total score of positive scoring hands. `Player`s with "winning" hands will share 1.0 point. Players with "losing" hands will share -1.0 penalty. Penalties and Points are added to the `Player`'s `score`
+To normalize the scores for `Player`s to a maximum of +1 and minimum of -1 per `Game` we divide each `Player`'s hand's score over the total score of positive scoring hands. `Player`s with "winning" hands will share 1 point. Players with "losing" hands will share a penalty of -1. Penalties and Points are added to the `Player`'s `score`
  
 ## Basic Tutorial
 
@@ -157,7 +157,7 @@ Amy is splitting her bet between paper and rock (1 each)
 }
 
 ```
-Frank (our AI player) is playing 100% Spock - a logical choice. If he plays a large number of Spocks the upside still remains 1.0, and the downside -1.0. But his share of the win (or loss) would be greater
+Frank (our AI player) is playing 100% Spock - a logical choice. If he plays many Spocks the upside still remains 1.0, and the downside -1.0. But his share of the win (or loss) would be greater
 
 ```
 {
@@ -186,7 +186,7 @@ To score the game submit a `CloseGame` transaction.
 
 This simply indicates that the `Game` with ID `1` is now done and will be scored, triggering the `closeGame` function that was described above.
 
-Click on the `Game` asset with ID 1 in registry, look at the scores for the hands played. The scores will always add to 0 per game.The state should be `CLOSED`.
+Click on the `Game` asset with ID 1 in registry, look at the scores for the hands played. The scores will always add to 0 per game. The state should be `CLOSED`.
 
 
 If you click on the `Player` participant registry you can check the score of each Player. Winning weapons get a total score of 1 and losing weapons a total score or -1. Points will be distributed proportionately and added to player's scores. You should see that the scores
@@ -196,6 +196,6 @@ as follows:
 * `amy@email.com` : 1/3
 * `frank@emai.com` : 2/3
 
-Going all Spock - not bad. What happens if Frank plays many Spocks? He would have shared less of the gain with Amy. For instance, with 100,000 spocks he would have had a score of 0.999995 and Amy would only get 0.000005. He would have risked losing bigger also. Therefore we cap the number of weapons to 100
+Going all Spock - not bad. What happens if Frank plays many Spocks? He would have shared less of the gain with Amy. For instance, with 100,000 Spocks he would have had a score of 0.999995 and Amy would only get 0.000005. He would have risked losing bigger also. Therefore we cap the number of weapons to 100.
 
-Over time in a pure random system we should expect scores to hover around zero. If we see a positive value over a large number of games (even small positive values, it means the AI beats random guesses)
+Over time in a pure random system we should expect scores to hover around zero. If we see a positive value over many games (even small positive values, it means the AI beats random guesses)
