@@ -3,30 +3,30 @@
 
 > This is an extension on the classic rock, paper, scissors ("scropalisp"*) game that adds two new hands shapes (spock - vulcan greeting, and lizard - fingers together). It is a multiplayer, multi weapon game in which players can hold as many weapons as desired per game (up to 100). 
 
-(* Yes, I know it should be "scparolisp", but "scropalisp" is pronouncable)
+* Yes, I know it should be "scparolisp", but "scropalisp" is pronouncable
 
-This game is distributed and any number of participants (AI and Human) can take part in any game. Players, play hands made with any number of weapons, this allows them to distribute risk or to leverage greater returns. The desired weapons are added to a hand that is added to an open game. Once the game is closed for new hands scoring takes place and player's have their scores adjusted 
+This game is distributed and any number of participants (AI and Human) can take part in any game. Players, play hands made with any number of weapons, this allows them to distribute risk or to leverage greater returns. The desired weapons are added to a hand that is added to an open game. Once the game is closed for new hands scoring takes place and players have their scores adjusted 
 
 ## Motivation
 
 By itself a simple game like this does not require a blockchain, but one we release this into a broad network with multiple nodes or where AI may compete in various games at the same time a blockchain facilitates in the following ways:
 
 * Transactional updating of scores
-* Uncorruptable evidential record for research purposes
+* Incorruptable evidential record for research purposes
 
-In order to determine how well an AI has done we will look at its score and the number of games played. The transactional incrementing of the scores are crticial because errors during race conditions with a massively parallel system is hard to track down
+In order to determine how well an AI has done we will look at its score and the number of games played. The transactional incrementing of the scores are critical  because errors during race conditions with a massively parallel system is hard to track down
 
 ## Composition
 
 **Participants:**
 
-`Player`: A paticipant playing hands in a game
+`Player`: A participant playing hands in a game
 
 `GameMaster`: A participant creating and closing games 
 
 **Assets:**
 
-`Game`: Held and controlled by the `GameMaster`. `Player`s submit hands to a game transactionally. The game is also closed as scored transctionally
+`Game`: Held and controlled by the `GameMaster`. `Player`s submit hands to a game transactionally. The game is also closed as scored transactionally
 
 **Transactions:**
 
@@ -58,7 +58,7 @@ The scores in hands can be large positive or negative integers
 
 ### Awarding points to players ###
 
-Since all weapons are scored against other weapons (including weapons in the same hand) the total score of all weapons over all hands is always 0 (the sum of postive, negative values will cancel out). 
+Since all weapons are scored against other weapons (including weapons in the same hand) the total score of all weapons over all hands is always 0 (the sum of positive, negative values will cancel out). 
 
 To normalize the scores for `Player`s to a maximum of +1 and minimum of -1 per `Game` we divide each `Player`'s hand's score over the total score of positive scoring hands. `Player`s with "winning" hands will share 1.0 point. Players with "losing" hands will share -1.0 penalty. Penalties and Points are added to the `Player`'s `score`
  
@@ -126,7 +126,7 @@ In the `Game` asset registry, create a new game. The game is held by our one and
 
 Each player will submit a hand to the game. We allow users to submit multiple hands to the same game if desired.
 
-Joe is playing 5 scissors, 2 rocks and 3 lizard (hedging his bet).
+Joe is playing 5 scissors, 2 rocks and 3 lizards (hedging his bet).
 
 You can use the `PlayHand` transaction to submit the hands and then view the hands as they are added to the `Game` asset
 
@@ -196,6 +196,6 @@ as follows:
 * `amy@email.com` : 1/3
 * `frank@emai.com` : 2/3
 
-Going all Spock - not bad. What happens if frank plays many Spocks? He would have shared less of the gain with Amy. For instance with 100,000 spocks he would have had a score of 0.999995 and Amy would only get 0.000005. He would have risked losing bigger also. This is why we cap the number of weapons to 100
+Going all Spock - not bad. What happens if Frank plays many Spocks? He would have shared less of the gain with Amy. For instance, with 100,000 spocks he would have had a score of 0.999995 and Amy would only get 0.000005. He would have risked losing bigger also. Therefore we cap the number of weapons to 100
 
-Over time in a pure random system we should expect scores to hover around zero. If we see a positive value over an large number of games (even small postive values, it means the AI beats random guesses)
+Over time in a pure random system we should expect scores to hover around zero. If we see a positive value over a large number of games (even small positive values, it means the AI beats random guesses)
